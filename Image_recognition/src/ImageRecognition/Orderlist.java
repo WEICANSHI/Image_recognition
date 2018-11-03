@@ -9,6 +9,7 @@ import java.util.List;
 
 import javax.swing.JPanel;
 
+@SuppressWarnings("serial")
 public class Orderlist extends JPanel{
 	private List<String> orders = new ArrayList<String>();
 	

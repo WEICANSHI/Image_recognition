@@ -12,6 +12,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
 
 import javax.imageio.IIOImage;
@@ -66,6 +67,42 @@ public class FileManager {
 		
 	}
 	
+	public static List<String> unZip(String fileZip) throws IOException {
+		List<String> images = new ArrayList<String>();
+        File destDir = new File("./Image/");
+        byte[] buffer = new byte[1024];
+        ZipInputStream zis = new ZipInputStream(new FileInputStream(fileZip));
+        ZipEntry zipEntry = zis.getNextEntry();
+        while (zipEntry != null) {
+            File newFile = newFile(destDir, zipEntry);
+            images.add(zipEntry.getName());
+            FileOutputStream fos = new FileOutputStream(newFile);
+            int len;
+            while ((len = zis.read(buffer)) > 0) {
+                fos.write(buffer, 0, len);
+            }
+            fos.close();
+            zipEntry = zis.getNextEntry();
+        }
+        zis.closeEntry();
+        zis.close();
+        return images;
+	}
+	
+	public static File newFile(File destinationDir, ZipEntry zipEntry) throws IOException {
+        File destFile = new File(destinationDir, zipEntry.getName());
+        
+         
+        String destDirPath = destinationDir.getCanonicalPath();
+        String destFilePath = destFile.getCanonicalPath();
+         
+        if (!destFilePath.startsWith(destDirPath + File.separator)) {
+            throw new IOException("Entry is outside of the target dir: " + zipEntry.getName());
+        }
+         
+        return destFile;
+    }
+	
 	public static void compressPictureByQality() {
 		try {
 			File input = new File("Image/test01.jpg");
@@ -95,6 +132,13 @@ public class FileManager {
 	}
 	
 	public static void main(String[] args) {
-		FileManager.compressPictureByQality();
+		//FileManager.compressPictureByQality();
+		//FileManager.createZip("zuer", List<String> images)
+		try {
+			FileManager.unZip("./Zips/zuer2.zip");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
     }
 }
