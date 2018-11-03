@@ -49,7 +49,7 @@ public class testPost {
 	public static void createClassifier() throws FileNotFoundException {
 		System.out.println("creating objects...");
 		CreateClassifierOptions createClassifierOptions = new CreateClassifierOptions.Builder()
-		.name("newly_dogs")
+		.name("newly_dogs2")
 		.addClass("beagle", new File("./Image/beagle.zip"))
 		.addClass("goldenretriever",new File("./Image/golden-retriever.zip"))
 		.addClass("husky", new File("./Image/husky.zip"))
@@ -65,8 +65,10 @@ public class testPost {
 		.verbose(true)
 		.build();
 		Classifiers classifiers = service.listClassifiers(listClassifiersOptions).execute();
-		//System.out.println(classifiers);
-		return classifiers.toString();
+		System.out.println(classifiers);
+		String ret = classifiers.toString();
+		return ret;
+		//return classifiers.toString();
 	}
 	
 	public static void getClassifier(String name) {
@@ -85,12 +87,13 @@ public class testPost {
 //		testPost.costomerize_test("fruitbowl.jpg", "IBM");
 		testPost.costomerize_test("dogs.jpg", "me");
 		//testPost.createClassifier();
-		String val = testPost.getClassifier();
-		System.out.println(val);
-//		testPost.createClassifier();
+//		String val = testPost.getClassifier();
+//		System.out.println("---------------------");
+//		System.out.println(val);
+		//testPost.createClassifier();
 //		System.out.println("-----------------------------");
-		//testPost.deleteClassifier("newly_dogs_1245910926");
-		//testPost.getClassifier();
+		//testPost.deleteClassifier("newly_dogs_2079904089");
+		testPost.getClassifier();
 		//testPost.getClassifier("dogs_1818370440");
 	}
 }
