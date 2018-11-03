@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<IMAGES>
+  <Image>
+    <name>t10</name>
+    <class>type1</class>
+  </Image>
+  <Image>
+    <name>t11</name>
+    <class>type1</class>
+  </Image>
+  <Image>
+    <name>t12</name>
+    <class>type1</class>
+  </Image>
+  <Image>
+    <name>t13</name>
+    <class>type1</class>
+  </Image>
+<Image>
+    <name>t20</name>
+    <class>type2</class>
+  </Image>
+  <Image>
+    <name>t21</name>
+    <class>type2</class>
+  </Image>
+  <Image>
+    <name>t22</name>
+    <class>type2</class>
+  </Image>
+<Image>
+    <name>t30</name>
+    <class>type3</class>
+  </Image>
+</IMAGES>

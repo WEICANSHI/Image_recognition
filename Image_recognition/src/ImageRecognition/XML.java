@@ -1,31 +1,132 @@
 package ImageRecognition;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Stack;
 
 import org.w3c.dom.DOMImplementation;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 import org.w3c.dom.Text;
 import org.w3c.dom.ls.DOMImplementationLS;
 import org.w3c.dom.ls.LSSerializer;
+import org.xml.sax.SAXException;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.TransformerFactoryConfigurationError;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;;
 
 public class XML {
+	public static String imageDir = "./Image/";
+	public static String XMLDir = "./XML/";
+	public static String classifyRecord = "classRecord.xml";
 	
-	public static void createXML(String jason)  throws ParserConfigurationException, 
-									TransformerFactoryConfigurationError, TransformerException {
+	public static void classifyRecord(String Class, List<String> images) throws Exception {
+		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+		DocumentBuilder builder = factory.newDocumentBuilder();
+		Document doc = null;
+		Element rootElement = null;
+		boolean appendRoot = false;
+		try {
+			doc = builder.parse(new File(XMLDir + classifyRecord));
+			rootElement = doc.getDocumentElement();
+		}catch(FileNotFoundException e) {
+			doc = builder.newDocument();
+			rootElement = doc.createElement("IMAGES");
+			appendRoot = true;
+		}
+		
+		for(int i = 0; i < images.size(); i++) {
+			Element element = doc.createElement("Image");
+			Element name = doc.createElement("name");
+			Element c = doc.createElement("class");
+			Text textname = doc.createTextNode(images.get(i));
+			Text textclass = doc.createTextNode(Class);
+			name.appendChild(textname);
+			c.appendChild(textclass);
+			element.appendChild(name);
+			element.appendChild(c);
+			rootElement.appendChild(element);
+		}
+		
+		if(appendRoot) doc.appendChild(rootElement);
+		
+		
+		Transformer t = TransformerFactory.newInstance().newTransformer();
+		t.setOutputProperty(OutputKeys.INDENT, "yes");
+		t.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
+		t.transform(new DOMSource(doc), new StreamResult(new File(XMLDir + classifyRecord)));
+	}
+	
+	public static Map<String, List<String> > load(){
+		Map<String, List<String> > record = new HashMap<>();
+		try {
+			DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+			DocumentBuilder builder = factory.newDocumentBuilder();
+			Document doc = builder.parse(new File(XMLDir + classifyRecord));
+			Element root = doc.getDocumentElement();
+			
+			NodeList children = root.getChildNodes();
+			
+			for(int i = 0; i < children.getLength(); i ++) {
+				String name = "";
+				String C = "";
+				Node child = children.item(i);
+				if(child instanceof Element) {
+					Element childElement = (Element) child;
+					NodeList subchildren = childElement.getChildNodes();
+					for(int j = 0; j < subchildren.getLength(); j ++) {
+						Node subchild = subchildren.item(j);
+						if(subchild instanceof Element) {
+							Element subchildElement = (Element) subchild;
+							Text textNode = (Text) subchildElement.getLastChild();
+							String text = textNode.getData().trim();
+							if(subchildElement.getTagName().equals("name")) {
+								name = text;
+							}else {
+								C = text;
+							}
+						}
+					}
+					if(record.containsKey(C.toString())) {
+						record.get(C).add(name);
+					}else {
+						record.put(C, new ArrayList<String> (Arrays.asList(name)));
+					}
+				}
+			}
+				//NodeList subchild = child.getChildNodes();
+//				Text textname = (Text) subchild.item(0).getFirstChild();
+//				Text C = (Text) subchild.item(1).getFirstChild();
+//				
+//				if(record.containsKey(C.toString())) {
+//					record.get(C.toString()).add(textname.toString());
+//				}else {
+//					record.put(C.toString(), Arrays.asList(textname.toString()));
+//				}
+				
+			
+			return record;
+		}catch(IOException | ParserConfigurationException | SAXException e) {
+			return null;
+		}
+	}
+	
+	public static void createXML(String jason) throws Exception {
 		
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 		DocumentBuilder builder = factory.newDocumentBuilder();
@@ -173,50 +274,72 @@ public class XML {
 	
 	
 	public static void main(String args[]) {
-		String input = "{\n" + 
-				"  \"classifiers\": [\n" + 
-				"    {\n" + 
-				"      \"classifier_id\": \"dogs_1818370440\",\n" + 
-				"      \"name\": \"dogs\",\n" + 
-				"      \"owner\": \"fcc1e103-8d03-43c8-bf31-b72a276acee3\",\n" + 
-				"      \"status\": \"ready\",\n" + 
-				"      \"core_ml_enabled\": true,\n" + 
-				"      \"created\": \"2018-10-28T14:43:33.519\",\n" + 
-				"      \"classes\": [\n" + 
-				"        {\n" + 
-				"          \"class\": \"goldenretriever\"\n" + 
-				"        },\n" + 
-				"        {\n" + 
-				"          \"class\": \"husky\"\n" + 
-				"        },\n" + 
-				"        {\n" + 
-				"          \"class\": \"beagle\"\n" + 
-				"        }\n" + 
-				"      ],\n" + 
-				"      \"updated\": \"2018-10-28T14:43:33.519\"\n" + 
-				"    },\n" + 
-				"    {\n" + 
-				"      \"classifier_id\": \"newly_dogs_1669084498\",\n" + 
-				"      \"name\": \"newly_dogs\",\n" + 
-				"      \"owner\": \"fcc1e103-8d03-43c8-bf31-b72a276acee3\",\n" + 
-				"      \"status\": \"training\",\n" + 
-				"      \"core_ml_enabled\": true,\n" + 
-				"      \"created\": \"2018-11-02T20:19:35.801\",\n" + 
-				"      \"classes\": [\n" + 
-				"        {\n" + 
-				"          \"class\": \"goldenretriever\"\n" + 
-				"        },\n" + 
-				"        {\n" + 
-				"          \"class\": \"beagle\"\n" + 
-				"        },\n" + 
-				"        {\n" + 
-				"          \"class\": \"husky\"\n" + 
-				"        }\n" + 
-				"      ],\n" + 
-				"      \"updated\": \"2018-11-02T20:19:35.801\"\n" + 
-				"    }\n" + 
-				"  ]\n" + 
-				"}\n";
+		String type1[] = {"t10", "t11", "t12", "t13"};
+		String type2[] = {"t20", "t21", "t22"};
+		String type3[] = {"t30"};
+		
+		try {
+			XML.classifyRecord("type1", Arrays.asList(type1));
+			XML.classifyRecord("type2", Arrays.asList(type2));
+			XML.classifyRecord("type3", Arrays.asList(type3));
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+		Map<String, List<String> > record = XML.load();
+		Iterator<Map.Entry<String, List<String>> > itr = record.entrySet().iterator();
+		while(itr.hasNext()) {
+			Map.Entry<String, List<String>> tmp = itr.next();
+			System.out.println(tmp.getKey() + "==================");
+			for(int i = 0; i < tmp.getValue().size(); i++) {
+				System.out.println(tmp.getValue().get(i));
+			}
+		}
+		
+//		String input = "{\n" + 
+//				"  \"classifiers\": [\n" + 
+//				"    {\n" + 
+//				"      \"classifier_id\": \"dogs_1818370440\",\n" + 
+//				"      \"name\": \"dogs\",\n" + 
+//				"      \"owner\": \"fcc1e103-8d03-43c8-bf31-b72a276acee3\",\n" + 
+//				"      \"status\": \"ready\",\n" + 
+//				"      \"core_ml_enabled\": true,\n" + 
+//				"      \"created\": \"2018-10-28T14:43:33.519\",\n" + 
+//				"      \"classes\": [\n" + 
+//				"        {\n" + 
+//				"          \"class\": \"goldenretriever\"\n" + 
+//				"        },\n" + 
+//				"        {\n" + 
+//				"          \"class\": \"husky\"\n" + 
+//				"        },\n" + 
+//				"        {\n" + 
+//				"          \"class\": \"beagle\"\n" + 
+//				"        }\n" + 
+//				"      ],\n" + 
+//				"      \"updated\": \"2018-10-28T14:43:33.519\"\n" + 
+//				"    },\n" + 
+//				"    {\n" + 
+//				"      \"classifier_id\": \"newly_dogs_1669084498\",\n" + 
+//				"      \"name\": \"newly_dogs\",\n" + 
+//				"      \"owner\": \"fcc1e103-8d03-43c8-bf31-b72a276acee3\",\n" + 
+//				"      \"status\": \"training\",\n" + 
+//				"      \"core_ml_enabled\": true,\n" + 
+//				"      \"created\": \"2018-11-02T20:19:35.801\",\n" + 
+//				"      \"classes\": [\n" + 
+//				"        {\n" + 
+//				"          \"class\": \"goldenretriever\"\n" + 
+//				"        },\n" + 
+//				"        {\n" + 
+//				"          \"class\": \"beagle\"\n" + 
+//				"        },\n" + 
+//				"        {\n" + 
+//				"          \"class\": \"husky\"\n" + 
+//				"        }\n" + 
+//				"      ],\n" + 
+//				"      \"updated\": \"2018-11-02T20:19:35.801\"\n" + 
+//				"    }\n" + 
+//				"  ]\n" + 
+//				"}\n";
 		
 //		String input = "{\n" + 
 //				"  \"classifiers\": [\n" + 
@@ -243,20 +366,13 @@ public class XML {
 //				"  ]\n" + 
 //				"}";
 		
-		System.out.println(input);
-		
-		try {
-			XML.createXML(input);
-		} catch (ParserConfigurationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (TransformerFactoryConfigurationError e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (TransformerException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+//		System.out.println(input);
+//		
+//		try {
+//			XML.createXML(input);
+//		} catch(Exception e) {
+//			e.printStackTrace();
+//		}
 		
 		
 

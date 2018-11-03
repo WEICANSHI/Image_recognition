@@ -14,18 +14,16 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
+@SuppressWarnings("serial")
 public class Menu extends JPanel{
 	
 	private List<JButton> buttons = new ArrayList<JButton>();
 	private List<String> image_files = new ArrayList<String>();
 	
-	public Menu() {
-		//Image img = Menu.readImage("./Image/prez.jpg");
-		//button.setIcon(new ImageIcon(img));	
-		//this.add(button);
+	public Menu(String files[]) {
 		this.setPreferredSize(new Dimension(1024, 768));
-		this.setLayout(new GridLayout(3, 3));
-		this.Initializer();
+		this.setLayout(new GridLayout(4, 3));
+		this.Initializer(files);
 		for(int i = 0; i < buttons.size(); i ++) {
 			this.add(buttons.get(i));
 		}
@@ -41,18 +39,13 @@ public class Menu extends JPanel{
 		}
 		//get the imageIcon
 		ImageIcon icon = new ImageIcon(img);
-		//image = icon.getImage();
-		//return image;
 		return icon;
 	}
 	
 	
-	private void Initializer() {
+	private void Initializer(String files[]) {
 		String dir = "./Image/";
-		String files[] = {"prez.jpg", "test01.jpg", 
-						"test02.jpg", "test03.jpg", "test04.jpg"};
-		
-		for(int i = 0; i < 5; i++) {
+		for(int i = 0; i < files.length; i++) {
 			JButton b = new JButton();
 			ImageIcon icon = Menu.readImage(dir + files[i]);
 			Image scaleImage = icon.getImage().getScaledInstance(200, 200,Image.SCALE_DEFAULT);

@@ -6,9 +6,11 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
@@ -19,12 +21,29 @@ import javax.imageio.ImageWriter;
 import javax.imageio.stream.ImageOutputStream;
 
 public class FileManager {
+	public String dir = "./Image/";
+	public Map<String, List<String> > classRecorder;
 	
-	public static void createZip() {
+	public FileManager() {
+		classRecorder = XML.load();
+		if(classRecorder == null)
+			classRecorder = new HashMap<String, List<String>>();
+	}
+	
+	
+	public void classify(String Class, List<String> images) {
+		classRecorder.put(Class, images);
 		try {
-			List<String> srcFiles = Arrays.asList("./Image/test01.jpg", "./Image/test02.jpg",
-	        		"./Image/test03.jpg", "./Image/test04.jpg");
-	        FileOutputStream fos = new FileOutputStream("./Zips/zuer2.zip");
+			XML.classifyRecord(Class, images);
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public static void createZip(String name, List<String> images) {
+		try {
+			List<String> srcFiles = new ArrayList<String>(images);
+	        FileOutputStream fos = new FileOutputStream("./Zips/" + name + ".zip");
 	        ZipOutputStream zipOut = new ZipOutputStream(fos);
 	        for (String srcFile : srcFiles) {
 	            File fileToZip = new File(srcFile);
