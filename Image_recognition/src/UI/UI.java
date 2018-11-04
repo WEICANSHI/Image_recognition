@@ -31,6 +31,7 @@ public class UI extends JFrame implements MouseListener{
 		
 		tool.train.addMouseListener(this);
 		tool.scan.addMouseListener(this);
+		tool.clear.addMouseListener(this);
 	}
 
 	
@@ -51,6 +52,9 @@ public class UI extends JFrame implements MouseListener{
 					order.check.updatefile("./test/" + file.getName());
 				}
 			}
+		}
+		if(arg0.getSource() == tool.clear) {
+			order.clear();
 		}
 	}
 

@@ -23,6 +23,7 @@ public class Orderlist extends JPanel{
 	}
 	
 	public void paintComponent(Graphics g) {
+		super.paintComponent(g);
 		int y = 50;
 		Graphics2D g2 = (Graphics2D)g;
 		g2.setFont(new Font("TimesRoman", Font.PLAIN, 20)); 
@@ -35,6 +36,11 @@ public class Orderlist extends JPanel{
 	
 	public void addOrder(String order) {
 		orders.add(order);
+		this.repaint();
+	}
+	
+	public void clear() {
+		orders = new ArrayList<String>();
 		this.repaint();
 	}
 }
