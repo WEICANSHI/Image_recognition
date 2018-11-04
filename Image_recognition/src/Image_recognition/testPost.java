@@ -21,7 +21,7 @@ import com.ibm.watson.developer_cloud.visual_recognition.v3.model.ListClassifier
 
 public class testPost {
 	private static String dirFile = "./Image/";
-	private static String key = "kSNDmdLt2ZVJsbqpWbP_Rd0bfDp_laplkz2pmARGxXvi";
+	private static String key = "QIYqMGWK50CaxQ9pXjCgqhz3jy1Pwi5-mJddWydmc6U9";
 	private static IamOptions options = new IamOptions.Builder().apiKey(key).build();
 	private static VisualRecognition service = new VisualRecognition("2018-03-19", options);
 	

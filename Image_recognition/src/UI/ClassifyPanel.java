@@ -38,7 +38,7 @@ public class ClassifyPanel extends JFrame{
 @SuppressWarnings("serial")
 class Panel extends JPanel implements MouseListener{
 	public JTextField textname= new JTextField(5);
-	public JButton brows = new JButton("brows");
+	public JButton brows = new JButton("browse");
 	public JButton finish = new JButton("Finish");
 	public List<String> classname = new ArrayList<String>();
 	public List<String> filename = new ArrayList<String>();
