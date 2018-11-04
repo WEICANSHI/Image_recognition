@@ -41,15 +41,21 @@ public class UI extends JFrame implements MouseListener{
 			new ClassifyPanel(this);
 		}
 		if(arg0.getSource() == tool.scan) {
-			JFileChooser chooser = new JFileChooser("./test/"); 
-			chooser.showSaveDialog(null);
-			File file = chooser.getSelectedFile();
-			if(file != null) {
-				String ret = quickcheck.scan("./test/" + file.getName());
-				if(ret != null) {
-					order.addOrder(ret);
-				}else {
-					order.check.updatefile("./test/" + file.getName());
+//			JFileChooser chooser = new JFileChooser("./test/"); 
+//			chooser.showSaveDialog(null);
+//			File file = chooser.getSelectedFile();
+			JFileChooser chooser = new JFileChooser("./test/");
+			chooser.setMultiSelectionEnabled(true);
+			chooser.showOpenDialog(null);
+			File[] files = chooser.getSelectedFiles();
+			for(int i = 0; i < files.length; i ++) {
+				if(files[i] != null) {
+					String ret = quickcheck.scan("./test/" + files[i].getName());
+					if(ret != null) {
+						order.addOrder(ret);
+					}else {
+						order.check.updatefile("./test/" + files[i].getName());
+					}
 				}
 			}
 		}

@@ -1821,5 +1821,9 @@
       <name>RiceRoll30compress.jpg</name>
       <class>riceroll</class>
     </Image>
+    <Image>
+      <name>dogs2.jpg</name>
+      <class>dumpling</class>
+    </Image>
   </Classifier>
 </IMAGES>
