@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<setting>
+	<current_classifier>menue88_770811818</current_classifier>
+	<ImageDir>./Image/</ImageDir>
+	<XMLDir>./XML/</XMLDir>
+	<ZipDir>./Zip/</ZipDir>
+	<Key>kSNDmdLt2ZVJsbqpWbP_Rd0bfDp_laplkz2pmARGxXvi</Key>
+	<Server_version>2018-03-19</Server_version>
+	<classifyRecord>classRecord.xml</classifyRecord>
+</setting>
