@@ -38,6 +38,7 @@ public class QuickChecking {
 			if(scoreindex == -1) return null;
 			ret = ret.substring(scoreindex + 9);
 			String score = "";
+			
 			for(int i = 0; i < ret.length(); i++) {
 				if(Character.isDigit(ret.charAt(i)) || ret.charAt(i) == '.' ) {
 					score += ret.charAt(i);
@@ -48,12 +49,14 @@ public class QuickChecking {
 			if(score.equals("")) return null;
 			double digscore = Double.parseDouble(score.trim());
 			if(digscore < 0.9) return null;
-			return CLASS; 
+			return CLASS;
+			
 		}catch(FileNotFoundException e) {
 			e.printStackTrace();
 		}
 		return null;
 	}
+	
 	
 	public static void main(String args[]) {
 		QuickChecking q = new QuickChecking();

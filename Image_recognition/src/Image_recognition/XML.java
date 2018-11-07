@@ -29,6 +29,7 @@ public class XML {
 	public static String version;
 	public static String imageDir;
 	public static String classifyRecord;
+	public static String unclassifyRecord;
 	public static String currentClassifier;
 	
 	/**
@@ -93,6 +94,49 @@ public class XML {
 		}
 	}
 	
+	public static void unclassifyRecord(String filname, String CLASS) {
+		DocumentBuilder builder = null;
+		Document doc = null;
+		Element rootElement = null;
+		try {
+			DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+			builder = factory.newDocumentBuilder();
+			doc = builder.parse(new File(XMLDir + unclassifyRecord));
+			rootElement = doc.getDocumentElement();
+		}catch(FileNotFoundException e) {
+			doc = builder.newDocument();
+			rootElement = doc.createElement("IMAGES");
+			doc.appendChild(rootElement);
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+		Element element = doc.createElement("Image");
+		Element name = doc.createElement("name");
+		Element c = doc.createElement("class");
+		Text textname = doc.createTextNode(filname);
+		Text textclass = doc.createTextNode(CLASS);
+		System.out.println();
+		name.appendChild(textname);
+		c.appendChild(textclass);
+		element.appendChild(name);
+		element.appendChild(c);
+		
+		rootElement.appendChild(element);
+		
+		try {
+			// transform in to XML file
+			Transformer t = TransformerFactory.newInstance().newTransformer();
+			t.setOutputProperty(OutputKeys.INDENT, "yes");
+			t.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
+			t.transform(new DOMSource(doc), new StreamResult(new File(XMLDir + unclassifyRecord)));
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+	}
+	
+	
 	public static void InitSetting(){
 		try {
 			DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
@@ -124,6 +168,8 @@ public class XML {
 						Key = text;
 					else if(childElement.getTagName().equals("Server_version"))
 						version = text;
+					else if(childElement.getTagName().equals("unclassifyRecord"))
+						unclassifyRecord = text;
 				}
 			}
 		}catch(Exception e) {

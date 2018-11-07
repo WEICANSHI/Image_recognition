@@ -4,7 +4,8 @@
 	<ImageDir>./Image/</ImageDir>
 	<XMLDir>./XML/</XMLDir>
 	<ZipDir>./Zip/</ZipDir>
-	<Key>{your_key}</Key>
+	<Key>{your api key here}</Key>
 	<Server_version>2018-03-19</Server_version>
 	<classifyRecord>classRecord.xml</classifyRecord>
+	<unclassifyRecord>unclassifyRecord.xml</unclassifyRecord>
 </setting>

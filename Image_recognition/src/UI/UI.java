@@ -41,9 +41,6 @@ public class UI extends JFrame implements MouseListener{
 			new ClassifyPanel(this);
 		}
 		if(arg0.getSource() == tool.scan) {
-//			JFileChooser chooser = new JFileChooser("./test/"); 
-//			chooser.showSaveDialog(null);
-//			File file = chooser.getSelectedFile();
 			JFileChooser chooser = new JFileChooser("./test/");
 			chooser.setMultiSelectionEnabled(true);
 			chooser.showOpenDialog(null);

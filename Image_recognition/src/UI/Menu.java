@@ -17,6 +17,8 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
+import Image_recognition.XML;
+
 @SuppressWarnings("serial")
 public class Menu extends JPanel implements MouseListener{
 	
@@ -66,6 +68,11 @@ public class Menu extends JPanel implements MouseListener{
 		for(int i = 0; i < buttons.size(); i++) {
 			if(arg0.getSource() == buttons.get(i)) {
 				ui.order.addOrder(classname.get(i));
+				if(ui.order.check.file != null) {
+					System.out.println(classname.get(i));
+					System.out.println(ui.order.check.file);
+					XML.unclassifyRecord(ui.order.check.file, classname.get(i));
+				}
 				ui.order.check.file = null;
 				break;
 			}
